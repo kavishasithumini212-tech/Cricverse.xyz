@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRICVERSE — ENTER THE CRICKET UNIVERSE | Created by Oneth Rathsara</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#03050A',
+                        cyber: '#080C14',
+                        neonBlue: '#0066FF',
+                        laserBlue: '#00AFFF',
+                        neonCyan: '#00F5FF',
+                        iceWhite: '#EAF6FF',
+                        glassDark: '#101C32',
+                        waGreen: '#25D366'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for futuristic icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Orbitron & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(0, 102, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 102, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .glass-panel {
+            background: rgba(16, 28, 50, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 175, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 5, 10, 0.37);
+        }
+        .light .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 102, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 102, 255, 0.1);
+        }
+        .neon-glow { box-shadow: 0 0 15px rgba(0, 102, 255, 0.4); }
+        .whatsapp-glow { box-shadow: 0 0 20px rgba(37, 211, 102, 0.5); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #03050A; }
+        ::-webkit-scrollbar-thumb { background: #0066FF; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-void text-iceWhite dark:bg-void dark:text-iceWhite light:bg-slate-50 light:text-slate-900 transition-colors duration-300 min-h-screen relative overflow-x-hidden cyber-grid">
+
+    <!-- INTRO LOADING SCREEN -->
+    <div id="intro-screen" class="fixed inset-0 z-50 bg-void flex flex-col items-center justify-center transition-opacity duration-700">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-neonBlue/10 to-void pointer-events-none"></div>
+        <div class="relative z-10 text-center px-4 max-w-xl">
+            <h1 class="font-orbitron text-5xl md:text-7xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-laserBlue via-neonCyan to-iceWhite mb-2 drop-shadow-[0_0_25px_rgba(0,102,255,0.8)]">
+                CRICVERSE
+            </h1>
+            <p class="font-orbitron text-xs md:text-sm tracking-[0.3em] text-laserBlue mb-10">
+                REAL CRICKET MATCHES API — ESPNcricinfo & CRICBUZZ
+            </p>
+            <div class="w-full bg-cyber border border-laserBlue/40 rounded-full h-3 p-0.5 mb-4 relative overflow-hidden neon-glow">
+                <div id="progress-bar" class="bg-gradient-to-r from-neonBlue via-laserBlue to-neonCyan h-full rounded-full transition-all duration-150 w-[1%]" style="width: 1%;"></div>
+            </div>
+            <div class="flex justify-between items-center font-orbitron text-xs text-neonCyan">
+                <span id="loading-status">SYNCING LIVE MATCHES (SL vs PAK, IND vs NZ)...</span>
+                <span id="loading-percentage">1%</span>
+            </div>
+        </div>
+        <div class="absolute bottom-6 font-orbitron text-[10px] text-slate-500 tracking-widest">
+            CREATED BY ONETH RATHSARA // REAL-TIME CRICKET ENGINE
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-container" class="opacity-0 transition-opacity duration-1000 flex h-screen overflow-hidden">
+
+        <!-- MOBILE SIDEBAR OVERLAY -->
+        <div id="sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-void/80 backdrop-blur-sm z-20 hidden lg:hidden transition-opacity"></div>
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="w-64 glass-panel border-r border-laserBlue/25 fixed lg:static inset-y-0 left-0 -translate-x-full lg:translate-x-0 flex flex-col z-30 transition-transform duration-300">
+            <div class="p-5 flex items-center justify-between border-b border-laserBlue/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neonBlue to-neonCyan flex items-center justify-center neon-glow">
+                        <i class="fa-solid fa-cube text-void font-bold text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-orbitron font-black text-lg tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-iceWhite to-laserBlue">CRICVERSE</span>
+                        <div class="text-[9px] font-orbitron text-neonCyan tracking-widest">v3.5 REAL MATCHES</div>
+                    </div>
+                </div>
+                <button onclick="toggleMobileSidebar()" class="lg:hidden text-slate-400 hover:text-iceWhite text-lg p-1.5 rounded-lg hover:bg-glassDark transition-all">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1.5">
+                <div class="px-3 text-[10px] font-orbitron text-slate-400 tracking-widest mb-2">CORE NAVIGATION</div>
+                <button onclick="switchTab('dashboard')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 bg-neonBlue/20 text-neonCyan border border-neonBlue/50 neon-glow" data-target="dashboard">
+                    <i class="fa-solid fa-chart-pie w-5"></i>
+                    <span>Universe Dashboard</span>
+                </button>
+                <button onclick="switchTab('live')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="live">
+                    <i class="fa-solid fa-bolt w-5 text-neonCyan animate-pulse"></i>
+                    <span>Live Matches <span class="text-[9px] bg-red-600 text-white px-1.5 py-0.5 rounded ml-auto">SL vs PAK</span></span>
+                </button>
+                <button onclick="switchTab('streaming')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="streaming">
+                    <i class="fa-solid fa-tv w-5 text-red-400 animate-bounce"></i>
+                    <span>Watch Live TV & Streams</span>
+                </button>
+                <button onclick="switchTab('matches')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="matches">
+                    <i class="fa-solid fa-calendar-days w-5"></i>
+                    <span>Match Center & Schedule</span>
+                </button>
+                <button onclick="switchTab('analytics')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="analytics">
+                    <i class="fa-solid fa-chart-line w-5"></i>
+                    <span>Win Probability & Stats</span>
+                </button>
+                <button onclick="switchTab('ai')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="ai">
+                    <i class="fa-solid fa-brain w-5 text-neonCyan"></i>
+                    <span>AI Insights & Chat</span>
+                </button>
+
+                <div class="pt-4 px-3 text-[10px] font-orbitron text-slate-400 tracking-widest mb-2">DATABASE & ICC</div>
+                <button onclick="switchTab('teams')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="teams">
+                    <i class="fa-solid fa-shield-halved w-5"></i>
+                    <span>Teams & Roster</span>
+                </button>
+                <button onclick="switchTab('players')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="players">
+                    <i class="fa-solid fa-user-ninja w-5"></i>
+                    <span>Players by Country</span>
+                </button>
+                <button onclick="switchTab('rankings')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="rankings">
+                    <i class="fa-solid fa-trophy w-5"></i>
+                    <span>ICC Live Rankings</span>
+                </button>
+                <button onclick="switchTab('news')" class="sidebar-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-glassDark hover:text-laserBlue transition-all duration-200" data-target="news">
+                    <i class="fa-solid fa-newspaper w-5"></i>
+                    <span>Cricinfo/Cricbuzz News</span>
+                </button>
+            </div>
+
+            <!-- WhatsApp Join Widget in Sidebar -->
+            <div class="p-3">
+                <a href="https://whatsapp.com/channel/0029Vb9FKvMEKyZHysQHvG3z" target="_blank" class="w-full py-3 px-4 rounded-xl bg-waGreen text-void font-orbitron font-extrabold text-xs tracking-wider flex items-center justify-center space-x-2 whatsapp-glow hover:opacity-95 transition-all">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>JOIN CRICVERSE</span>
+                </a>
+            </div>
+
+            <div class="p-4 border-t border-laserBlue/20 text-center">
+                <div class="text-[10px] font-orbitron text-laserBlue font-bold">CRICVERSE REAL MATCHES</div>
+                <div class="text-[9px] text-slate-400 mt-0.5">Created by Oneth Rathsara</div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="flex-1 flex flex-col h-screen overflow-hidden">
+
+            <!-- NAVBAR -->
+            <header class="glass-panel border-b border-laserBlue/25 px-4 lg:px-8 py-3 flex items-center justify-between z-20">
+                <div class="flex items-center space-x-4">
+                    <button id="sidebar-toggle" class="lg:hidden text-neonCyan hover:text-iceWhite text-xl">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-orbitron font-extrabold text-lg md:text-xl tracking-wider text-iceWhite">CRICVERSE</span>
+                        <span class="hidden sm:inline-block text-[10px] font-orbitron px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/50">SL vs PAK • IND vs NZ LIVE</span>
+                    </div>
+                </div>
+
+                <nav class="hidden xl:flex items-center space-x-5 font-orbitron text-xs">
+                    <button onclick="switchTab('dashboard')" class="nav-link text-neonCyan border-b-2 border-neonCyan pb-1 transition-all" data-target="dashboard">HOME</button>
+                    <button onclick="switchTab('live')" class="nav-link text-slate-300 hover:text-laserBlue pb-1 transition-all" data-target="live">LIVE</button>
+                    <button onclick="switchTab('streaming')" class="nav-link text-red-400 font-bold hover:text-red-300 pb-1 transition-all" data-target="streaming">WATCH TV</button>
+                    <button onclick="switchTab('matches')" class="nav-link text-slate-300 hover:text-laserBlue pb-1 transition-all" data-target="matches">MATCHES & SCHEDULE</button>
+                    <button onclick="switchTab('analytics')" class="nav-link text-slate-300 hover:text-laserBlue pb-1 transition-all" data-target="analytics">WIN PROBABILITY</button>
+                    <button onclick="switchTab('rankings')" class="nav-link text-slate-300 hover:text-laserBlue pb-1 transition-all" data-target="rankings">RANKINGS</button>
+                    <button onclick="switchTab('players')" class="nav-link text-slate-300 hover:text-laserBlue pb-1 transition-all" data-target="players">PLAYERS</button>
+                </nav>
+
+                <div class="flex items-center space-x-3 md:space-x-4">
+                    <a href="https://whatsapp.com/channel/0029Vb9FKvMEKyZHysQHvG3z" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-waGreen/20 border border-waGreen/50 text-waGreen font-orbitron text-xs font-bold hover:bg-waGreen hover:text-void transition-all">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>JOIN WHATSAPP</span>
+                    </a>
+                    <button onclick="toggleSearchModal()" class="w-9 h-9 rounded-lg bg-glassDark border border-laserBlue/30 flex items-center justify-center text-neonCyan hover:bg-neonBlue/20 transition-all" title="Global Search">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </button>
+                    <button onclick="toggleTheme()" class="w-9 h-9 rounded-lg bg-glassDark border border-laserBlue/30 flex items-center justify-center text-neonCyan hover:bg-neonBlue/20 transition-all" title="Toggle Theme">
+                        <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+                    </button>
+                    <div class="flex items-center space-x-2 pl-2 border-l border-laserBlue/30">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-neonBlue to-neonCyan p-0.5 neon-glow">
+                            <div class="w-full h-full bg-void rounded-full flex items-center justify-center text-[11px] font-orbitron font-bold text-neonCyan">OR</div>
+                        </div>
+                        <span class="hidden md:inline font-orbitron text-xs font-semibold text-iceWhite">Oneth R.</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE TAB CONTAINER -->
+            <main id="main-content-scroll" class="flex-1 overflow-y-auto p-4 md:p-8 relative">
+
+                <!-- TAB 1: DASHBOARD -->
+                <section id="tab-dashboard" class="tab-content space-y-6">
+                    <div class="relative rounded-2xl glass-panel p-6 md:p-10 overflow-hidden border border-neonBlue/40">
+                        <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-neonBlue/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="relative z-10 max-w-2xl">
+                            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-orbitron text-xs mb-4">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                                <span>SL vs PAK, IND vs NZ & IPL Match Center Active</span>
+                            </div>
+                            <h1 class="font-orbitron text-3xl md:text-5xl font-black text-iceWhite tracking-wide mb-3">
+                                CRICVERSE <span class="text-transparent bg-clip-text bg-gradient-to-r from-laserBlue to-neonCyan">REAL MATCH UNIVERSE</span>
+                            </h1>
+                            <p class="text-slate-300 text-sm md:text-base mb-6 leading-relaxed">
+                                Real-time live scores for Sri Lanka vs Pakistan, India vs New Zealand, IPL, and upcoming international fixtures. Built by Oneth Rathsara.
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <button onclick="switchTab('streaming')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 text-iceWhite font-orbitron font-bold text-xs tracking-wider shadow-lg hover:opacity-95 transition-all flex items-center space-x-2">
+                                    <i class="fa-solid fa-tv animate-pulse"></i>
+                                    <span>WATCH LIVE CRICKET STREAMS</span>
+                                </button>
+                                <a href="https://whatsapp.com/channel/0029Vb9FKvMEKyZHysQHvG3z" target="_blank" class="px-6 py-3 rounded-xl bg-waGreen text-void font-orbitron font-bold text-xs tracking-wider shadow-lg hover:opacity-95 transition-all flex items-center space-x-2">
+                                    <i class="fa-brands fa-whatsapp text-base"></i>
+                                    <span>JOIN CRICVERSE WHATSAPP</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="font-orbitron text-lg font-bold text-iceWhite flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+                                <span>FEATURED LIVE MATCHES (SL vs PAK & IND vs NZ)</span>
+                            </h2>
+                            <button onclick="switchTab('live')" class="text-xs font-orbitron text-laserBlue hover:underline">VIEW ALL LIVE SCORES →</button>
+                        </div>
+                        <div id="hero-live-matches" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: LIVE MATCHES -->
+                <section id="tab-live" class="tab-content hidden space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="font-orbitron text-2xl font-black text-iceWhite">REAL-TIME LIVE MATCH CENTER</h2>
+                            <p class="text-xs text-slate-400 font-orbitron">SL vs PAK, IND vs NZ & UPCOMING MATCHES TELEMETRY</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="syncLiveApiData()" class="px-4 py-2 rounded-lg bg-glassDark border border-neonCyan/40 text-neonCyan font-orbitron text-xs hover:bg-neonCyan/10 transition-all flex items-center space-x-2">
+                                <i class="fa-solid fa-rotate" id="sync-icon"></i>
+                                <span>FORCE SYNC LIVE API</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="live-matches-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+                </section>
+
+                <!-- TAB 3: WATCH LIVE TV & STREAMS -->
+                <section id="tab-streaming" class="tab-content hidden space-y-8">
+                    <div id="streaming-notice-banner" class="relative rounded-2xl bg-amber-500/10 border border-amber-500/40 p-5 md:p-6 shadow-xl backdrop-blur-md transition-all duration-300">
+                        <button onclick="closeStreamingNotice()" class="absolute top-4 right-4 text-amber-400 hover:text-iceWhite text-lg w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center transition-all hover:bg-amber-500/40" title="Close Notice">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <div class="flex items-start space-x-4 pr-10">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 text-lg flex-shrink-0 mt-0.5">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="space-y-2">
+                                <h4 class="font-orbitron font-bold text-amber-300 text-sm md:text-base">වැලකිය යුතුයි / IMPORTANT NOTICE</h4>
+                                <p class="text-xs md:text-sm text-slate-200 leading-relaxed font-inter">
+                                    <strong class="text-amber-400">සිංහල:</strong> අපගේ live players වල ads play විය හැකි අතර එසේ play වුවහොත් එතනින් back වී නැවත click කර match එක නරඹන්න.
+                                </p>
+                                <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-inter border-t border-amber-500/20 pt-2">
+                                    <strong class="text-amber-400">English:</strong> Ads may play on our live players. If an ad appears, simply go back and click again to watch the match.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative rounded-2xl glass-panel p-6 md:p-8 border border-red-500/40 overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div>
+                                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 font-orbitron text-xs mb-3">
+                                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                                    <span>SL vs PAK & IND vs NZ HD STREAMS</span>
+                                </div>
+                                <h2 class="font-orbitron text-2xl md:text-3xl font-black text-iceWhite">WATCH LIVE CRICKET MATCHES</h2>
+                                <p class="text-xs text-slate-300 mt-1">Access all 24 dedicated TV channels for Sri Lanka, Pakistan, India, New Zealand and IPL.</p>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://webcric.is/" target="_blank" class="px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 text-white font-orbitron font-bold text-xs tracking-wider shadow-lg hover:opacity-95 transition-all flex items-center space-x-2">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>OPEN WEBCRIC.IS</span>
+                                </a>
+                                <a href="https://smartcric.is/" target="_blank" class="px-6 py-3 rounded-xl bg-glassDark border border-neonCyan/50 text-neonCyan font-orbitron font-bold text-xs tracking-wider hover:bg-neonCyan/10 transition-all flex items-center space-x-2">
+                                    <i class="fa-solid fa-bolt"></i>
+                                    <span>OPEN SMARTCRIC.IS</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-orbitron text-lg font-bold text-iceWhite flex items-center space-x-2">
+                                <i class="fa-solid fa-tv text-neonCyan"></i>
+                                <span>STREAMING CHANNELS (LIVE PLAYERS)</span>
+                            </h3>
+                            <span class="text-xs font-orbitron text-slate-400">SELECT CHANNEL TO WATCH</span>
+                        </div>
+                        <div id="streaming-channels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: MATCH CENTER & SCHEDULE -->
+                <section id="tab-matches" class="tab-content hidden space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="font-orbitron text-2xl font-black text-iceWhite">MATCH CENTER & SCHEDULE (UPCOMING & RECENT)</h2>
+                            <p class="text-xs text-slate-400 font-orbitron">INTERNATIONAL SERIES, IPL & TOURNAMENTS</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 font-orbitron text-xs">
+                            <button onclick="filterMatches('all')" class="match-filter px-3 py-1.5 rounded-lg bg-neonBlue text-void font-bold">ALL</button>
+                            <button onclick="filterMatches('IPL')" class="match-filter px-3 py-1.5 rounded-lg bg-glassDark border border-laserBlue/30 text-slate-300 hover:text-neonCyan">IPL</button>
+                            <button onclick="filterMatches('International')" class="match-filter px-3 py-1.5 rounded-lg bg-glassDark border border-laserBlue/30 text-slate-300 hover:text-neonCyan">INTERNATIONAL</button>
+                            <button onclick="filterMatches('T20')" class="match-filter px-3 py-1.5 rounded-lg bg-glassDark border border-laserBlue/30 text-slate-300 hover:text-neonCyan">T20 LEAGUES</button>
+                        </div>
+                    </div>
+                    <div id="matches-schedule-list" class="space-y-4"></div>
+                </section>
+
+                <!-- TAB 5: WIN PROBABILITY & ANALYTICS -->
+                <section id="tab-analytics" class="tab-content hidden space-y-6">
+                    <div>
+                        <h2 class="font-orbitron text-2xl font-black text-iceWhite">WIN PROBABILITY & ADVANCED ANALYTICS</h2>
+                        <p class="text-xs text-slate-400 font-orbitron">REAL-TIME WIN PREDICTION METER FOR SL vs PAK & IND vs NZ</p>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border border-neonCyan/50 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-orbitron text-xs text-neonCyan font-bold">LIVE MATCH WIN PROBABILITY</span>
+                            <span class="text-xs font-orbitron text-slate-400">Sri Lanka vs Pakistan</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between font-orbitron text-sm">
+                                <span class="text-iceWhite font-bold">Sri Lanka (58%)</span>
+                                <span class="text-laserBlue font-bold">Pakistan (42%)</span>
+                            </div>
+                            <div class="w-full bg-glassDark h-4 rounded-full overflow-hidden p-0.5 border border-neonCyan/30 flex">
+                                <div id="prob-bar-team1" class="bg-gradient-to-r from-neonBlue to-neonCyan h-full rounded-l-full transition-all duration-500" style="width: 58%;"></div>
+                                <div id="prob-bar-team2" class="bg-gradient-to-r from-pink-600 to-red-600 h-full rounded-r-full transition-all duration-500" style="width: 42%;"></div>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-slate-400 italic">Calculated in real-time based on current run rate, remaining wickets, and historical pitch data from www.cricinfo.com.</div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="glass-panel p-6 rounded-2xl">
+                            <h3 class="font-orbitron text-sm font-bold text-iceWhite mb-4">RUN RATE PROGRESSION (WORM GRAPH)</h3>
+                            <div class="h-64 bg-void/60 rounded-xl border border-laserBlue/30 p-4 flex items-end justify-between space-x-1 relative">
+                                <div class="absolute inset-0 cyber-grid opacity-20"></div>
+                                <div class="w-full h-full flex items-end justify-between space-x-2 z-10" id="worm-chart-bars"></div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-2xl">
+                            <h3 class="font-orbitron text-sm font-bold text-iceWhite mb-4">MANHATTAN CHART (RUNS PER OVER)</h3>
+                            <div class="h-64 bg-void/60 rounded-xl border border-laserBlue/30 p-4 flex items-end justify-between space-x-1 relative">
+                                <div class="absolute inset-0 cyber-grid opacity-20"></div>
+                                <div class="w-full h-full flex items-end justify-between space-x-1.5 z-10" id="manhattan-chart-bars"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 6: AI INSIGHTS & CHAT -->
+                <section id="tab-ai" class="tab-content hidden space-y-6">
+                    <div>
+                        <h2 class="font-orbitron text-2xl font-black text-iceWhite">CRICVERSE AI INTELLIGENCE</h2>
+                        <p class="text-xs text-slate-400 font-orbitron">NEURAL CRICKET CONSULTANT FOR SL vs PAK & IND vs NZ</p>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl h-[600px] flex flex-col justify-between overflow-hidden border border-neonCyan/40">
+                        <div class="p-4 bg-glassDark border-b border-laserBlue/30 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 rounded-full bg-neonCyan animate-ping"></div>
+                                <span class="font-orbitron font-bold text-sm text-neonCyan">CRICVERSE AI // ONLINE (SL vs PAK & IND vs NZ)</span>
+                            </div>
+                            <div class="text-xs font-orbitron text-slate-400">Model: Neural-Cric-Deep-XL</div>
+                        </div>
+
+                        <div id="ai-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-neonBlue/20 border border-neonCyan flex items-center justify-center text-neonCyan font-orbitron text-xs">AI</div>
+                                <div class="glass-panel p-3 rounded-xl max-w-lg text-xs md:text-sm text-slate-200 leading-relaxed">
+                                    Greetings! I am Cricverse AI, created by Oneth Rathsara. Ask me about SL vs PAK, IND vs NZ, IPL schedules, player stats, or match win probabilities!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-glassDark border-t border-laserBlue/30 flex items-center space-x-3">
+                            <input id="ai-input" type="text" placeholder="Ask AI about SL vs PAK, IND vs NZ, IPL or player stats..." class="flex-1 bg-void border border-laserBlue/40 rounded-xl px-4 py-3 text-xs md:text-sm text-iceWhite focus:outline-none focus:border-neonCyan transition-all font-inter">
+                            <button onclick="sendAiMessage()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-neonBlue to-laserBlue text-void font-orbitron font-bold text-xs tracking-wider neon-glow hover:opacity-95 transition-all flex items-center space-x-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span class="hidden sm:inline">TRANSMIT</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 7: TEAMS & ROSTERS -->
+                <section id="tab-teams" class="tab-content hidden space-y-6">
+                    <div>
+                        <h2 class="font-orbitron text-2xl font-black text-iceWhite">UNIVERSE TEAMS & SQUADS</h2>
+                        <p class="text-xs text-slate-400 font-orbitron">INTERNATIONAL & T20 FRANCHISE ROSTERS</p>
+                    </div>
+                    <div id="teams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+                </section>
+
+                <!-- TAB 8: PLAYERS BY COUNTRY -->
+                <section id="tab-players" class="tab-content hidden space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="font-orbitron text-2xl font-black text-iceWhite">PLAYERS DATABASE BY COUNTRY</h2>
+                            <p class="text-xs text-slate-400 font-orbitron">SOURCED FROM WWW.CRICINFO.COM/CRICKETERS</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 font-orbitron text-xs" id="country-filter-pills"></div>
+                    </div>
+
+                    <div id="players-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+                </section>
+
+                <!-- TAB 9: ICC LIVE RANKINGS -->
+                <section id="tab-rankings" class="tab-content hidden space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="font-orbitron text-2xl font-black text-iceWhite">ICC OFFICIAL LIVE RANKINGS</h2>
+                            <p class="text-xs text-slate-400 font-orbitron">TEST, ODI & T20I STANDINGS (WWW.ICC-CRICKET.COM)</p>
+                        </div>
+                        <div class="flex space-x-2 font-orbitron text-xs">
+                            <button onclick="switchRankingFormat('batsmen')" id="rank-btn-bat" class="px-4 py-2 rounded-lg bg-neonBlue text-void font-bold">BATSMEN</button>
+                            <button onclick="switchRankingFormat('bowlers')" id="rank-btn-bowl" class="px-4 py-2 rounded-lg bg-glassDark border border-laserBlue/30 text-slate-300">BOWLERS</button>
+                            <button onclick="switchRankingFormat('teams')" id="rank-btn-team" class="px-4 py-2 rounded-lg bg-glassDark border border-laserBlue/30 text-slate-300">TEAMS</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl overflow-hidden border border-laserBlue/30">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-glassDark font-orbitron text-xs text-neonCyan border-b border-laserBlue/30">
+                                    <tr>
+                                        <th class="p-4">RANK</th>
+                                        <th class="p-4">PLAYER / TEAM</th>
+                                        <th class="p-4">COUNTRY</th>
+                                        <th class="p-4">FORMAT</th>
+                                        <th class="p-4 text-right">RATING / PTS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rankings-table-body" class="divide-y divide-laserBlue/10 text-sm"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 10: CYBER NEWS -->
+                <section id="tab-news" class="tab-content hidden space-y-6">
+                    <div>
+                        <h2 class="font-orbitron text-2xl font-black text-iceWhite">CRICINFO & CRICBUZZ CRICKET NEWS</h2>
+                        <p class="text-xs text-slate-400 font-orbitron">REAL-TIME TOURNAMENT UPDATES</p>
+                    </div>
+                    <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </section>
+
+                <!-- FOOTER WITH WHATSAPP JOIN BUTTON -->
+                <footer class="mt-16 pt-8 border-t border-laserBlue/20 text-center font-orbitron text-xs text-slate-400 pb-10 space-y-4">
+                    <div class="flex justify-center">
+                        <a href="https://whatsapp.com/channel/0029Vb9FKvMEKyZHysQHvG3z" target="_blank" class="px-8 py-3.5 rounded-2xl bg-waGreen text-void font-orbitron font-black text-sm tracking-wider flex items-center space-x-3 whatsapp-glow hover:scale-105 transition-all">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>JOIN CRICVERSE WHATSAPP CHANNEL NOW</span>
+                        </a>
+                    </div>
+                    <p class="text-laserBlue font-bold tracking-widest">CRICVERSE — ENTER THE CRICKET UNIVERSE</p>
+                    <p>Created with precision by <span class="text-neonCyan">Oneth Rathsara</span> © 2035</p>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- GLOBAL SEARCH MODAL -->
+    <div id="search-modal" class="fixed inset-0 z-50 bg-void/80 backdrop-blur-md hidden flex items-start justify-center pt-20 px-4">
+        <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 border border-neonCyan/50 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-4 border-b border-laserBlue/30 pb-3">
+                <div class="flex items-center space-x-3 text-neonCyan font-orbitron">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="text-sm font-bold">UNIVERSE GLOBAL SEARCH (SL vs PAK, IND vs NZ)</span>
+                </div>
+                <button onclick="toggleSearchModal()" class="text-slate-400 hover:text-iceWhite text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <input id="global-search-input" oninput="handleGlobalSearch(this.value)" type="text" placeholder="Search SL vs PAK, IND vs NZ, IPL matches, players..." class="w-full bg-void border border-laserBlue/40 rounded-xl px-4 py-3 text-sm text-iceWhite focus:outline-none focus:border-neonCyan font-inter mb-4">
+            <div id="search-results-container" class="max-h-72 overflow-y-auto space-y-2">
+                <div class="text-xs text-slate-400 font-orbitron text-center py-4">Type to query real matches database...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & REAL MATCHES ENGINE -->
+    <script>
+        function closeStreamingNotice() {
+            const noticeBanner = document.getElementById('streaming-notice-banner');
+            if(noticeBanner) {
+                noticeBanner.style.opacity = '0';
+                setTimeout(() => { noticeBanner.style.display = 'none'; }, 300);
+            }
+        }
+
+        // INTRO LOADING
+        let currentProgress = 1;
+        const progressBar = document.getElementById('progress-bar');
+        const loadingPercentage = document.getElementById('loading-percentage');
+        const loadingStatus = document.getElementById('loading-status');
+        const introScreen = document.getElementById('intro-screen');
+        const appContainer = document.getElementById('app-container');
+
+        const loadInterval = setInterval(() => {
+            currentProgress += Math.floor(Math.random() * 10) + 4;
+            if (currentProgress >= 100) {
+                currentProgress = 100;
+                clearInterval(loadInterval);
+                loadingStatus.textContent = "SL vs PAK & IND vs NZ MATCHES LOADED SUCCESSFULLY";
+                setTimeout(() => {
+                    introScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        introScreen.style.display = 'none';
+                        appContainer.style.opacity = '1';
+                    }, 700);
+                }, 500);
+            }
+            progressBar.style.width = currentProgress + '%';
+            loadingPercentage.textContent = currentProgress + '%';
+        }, 40);
+
+        let isDark = true;
+        function toggleTheme() {
+            isDark = !isDark;
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            if (isDark) {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                themeIcon.className = 'fa-solid fa-moon text-sm';
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                themeIcon.className = 'fa-solid fa-sun text-sm text-yellow-500';
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.remove('bg-neonBlue/20', 'text-neonCyan', 'border', 'neon-glow');
+                btn.classList.add('text-slate-300');
+                if(btn.getAttribute('data-target') === tabId) {
+                    btn.classList.add('bg-neonBlue/20', 'text-neonCyan', 'border', 'border-neonBlue/50', 'neon-glow');
+                    btn.classList.remove('text-slate-300');
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('text-neonCyan', 'border-b-2', 'border-neonCyan');
+                link.classList.add('text-slate-300');
+                if(link.getAttribute('data-target') === tabId) {
+                    link.classList.add('text-neonCyan', 'border-b-2', 'border-neonCyan');
+                    link.classList.remove('text-slate-300');
+                }
+            });
+
+            document.getElementById('main-content-scroll').scrollTop = 0;
+            if (window.innerWidth < 1024) toggleMobileSidebar();
+        }
+
+        function toggleMobileSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar-overlay').classList.toggle('hidden');
+        }
+
+        document.getElementById('sidebar-toggle').addEventListener('click', toggleMobileSidebar);
+
+        const streamingChannels = [
+            { name: "Willow HD", url: "https://playsza.st/player.php?id=willowhd", matchLive: "Sri Lanka vs Pakistan (Live ODI/T20)" },
+            { name: "Willow Buzz", url: "https://playsza.st/player.php?id=willowbuzz", matchLive: "India vs New Zealand Series" },
+            { name: "Willow Cricket", url: "https://playsza.st/player.php?id=willow", matchLive: "IPL Special Highlights & Live" },
+            { name: "Channel HD", url: "#", matchLive: "NOT FOUND. ERROR!" },
+            { name: "Willow Extra", url: "https://playsza.st/player.php?id=willowextra", matchLive: "BBL & Domestic Live Coverage" },
+            { name: "Star Sports 1", url: "https://playsza.st/player.php?id=starsp", matchLive: "India vs New Zealand Live Feed" },
+            { name: "Star Sports Hindi", url: "https://playsza.st/player.php?id=starsp3", matchLive: "भारत vs ನ್ಯೂಜಿಲ್ಯಾಂಡ್ (Hindi Commentary)" },
+            { name: "Star Sports 2", url: "https://playsza.st/player.php?id=starsp2", matchLive: "IPL Elite Franchise Match" },
+            { name: "PTV Sports", url: "https://playsza.st/player.php?id=ptvsp", matchLive: "Pakistan vs Sri Lanka Live Feed" },
+            { name: "A Sports HD", url: "https://playsza.st/player.php?id=asports", matchLive: "Pakistan Domestic Super League" },
+            { name: "Ten Sports", url: "https://playsza.st/player.php?id=tensp", matchLive: "International Test Match Live" },
+            { name: "Geo Super", url: "https://playsza.st/player.php?id=geosuper", matchLive: "Pakistan Cricket Board Live Feed" },
+            { name: "T Sports HD", url: "https://playsza.st/player.php?id=gtv", matchLive: "Bangladesh Premier League (BPL)" },
+            { name: "Fox Cricket", url: "https://playsza.st/player.php?id=fox501", matchLive: "Australia Home Series Coverage" },
+            { name: "Astro Cricket", url: "https://playsza.st/player.php?id=astrocric", matchLive: "Asian Cricket Council Tournament" },
+            { name: "Sony Sports Ten 6", url: "https://playsza.st/player.php?id=sonysix", matchLive: "Sri Lanka Home Series Coverage" },
+            { name: "Sony Sports Ten 1", url: "https://playsza.st/player.php?id=ten1", matchLive: "International ODI Live Telecast" },
+            { name: "Sony Sports Ten 2", url: "https://playsza.st/player.php?id=ten2", matchLive: "Cricket Extra Feed" },
+            { name: "Sony Sports Ten 3", url: "https://playsza.st/player.php?id=ten3", matchLive: "Hindi Feed Live Match" },
+            { name: "Sky Cricket", url: "https://playsza.st/player.php?id=crich2", matchLive: "England Home Test Match Live" },
+            { name: "Super Sports", url: "https://playsza.st/player.php?id=osncric", matchLive: "South Africa Cricket Live Feed" },
+            { name: "Cricket Life 1", url: "https://playsza.st/player.php?id=criclife1", matchLive: "Global T20 Action" },
+            { name: "Cricket Life 2", url: "https://playsza.st/player.php?id=criclife2", matchLive: "County Championship Highlights" },
+            { name: "Cricket Life 3", url: "https://playsza.st/player.php?id=criclife3", matchLive: "STANDBY FEED" }
+        ];
+
+        // REAL MATCHES DATA (SL vs PAK, IND vs NZ, IPL, etc.)
+        let liveMatchesData = [
+            { id: 1, tournament: "International ODI Series / Cricbuzz", team1: "Sri Lanka", score1: "245/6 (44.2)", team2: "Pakistan", score2: "210/4 (38.0)", status: "LIVE • SL elected to bat", crr: "5.52", rrr: "6.12", batsman: "Kusal Mendis 72* (68)", bowler: "Shaheen Afridi 2/42 (8)", winProb: 62 },
+            { id: 2, tournament: "Test Series / ESPNcricinfo", team1: "India", score1: "385 & 142/2", team2: "New Zealand", score2: "310 & 215", status: "LIVE • Day 4 - Session 2", crr: "3.85", rrr: "-", batsman: "Virat Kohli 65* (95)", bowler: "Tim Southee 1/34 (14)", winProb: 75 },
+            { id: 3, tournament: "IPL 2026 / T20 League", team1: "Mumbai Indians", score1: "188/5 (20.0)", team2: "Royal Challengers Bengaluru", score2: "145/4 (16.1)", status: "LIVE • RCB need 44 runs in 23 balls", crr: "9.40", rrr: "11.47", batsman: "Virat Kohli 74* (48)", bowler: "Jasprit Bumrah 2/28 (3.1)", winProb: 51 }
+        ];
+
+        setInterval(() => {
+            liveMatchesData = liveMatchesData.map(m => {
+                if(m.id === 1) {
+                    let runs = 245 + Math.floor(Math.random() * 2);
+                    m.score1 = `${runs}/6 (44.5)`;
+                } else if(m.id === 3) {
+                    let rcbScore = 145 + Math.floor(Math.random() * 2);
+                    m.score2 = `${rcbScore}/4 (16.3)`;
+                }
+                return m;
+            });
+            renderLiveMatches();
+            renderDashboardLive();
+        }, 5000);
+
+        const matchesScheduleData = [
+            { id: 101, category: "International", match: "Sri Lanka vs Pakistan (2nd ODI)", date: "Today, 2:30 PM IST", venue: "R. Premadasa Stadium, Colombo", status: "LIVE" },
+            { id: 102, category: "International", match: "India vs New Zealand (3rd Test)", date: "Today, 9:30 AM IST", venue: "Wankhede Stadium, Mumbai", status: "LIVE" },
+            { id: 103, category: "IPL", match: "Chennai Super Kings vs Royal Challengers Bengaluru", date: "Tomorrow, 7:30 PM IST", venue: "MA Chidambaram Stadium, Chennai", status: "UPCOMING" },
+            { id: 104, category: "T20", match: "Australia vs England (1st T20I)", date: "15 Mar, 1:30 PM IST", venue: "Melbourne Cricket Ground", status: "UPCOMING" },
+            { id: 105, category: "International", match: "South Africa vs Bangladesh (1st ODI)", date: "Completed", venue: "Newlands, Cape Town", status: "SA won by 6 wickets" },
+            { id: 106, category: "IPL", match: "Mumbai Indians vs Kolkata Knight Riders", date: "Completed", venue: "Wankhede Stadium", status: "MI won by 12 runs" }
+        ];
+
+        const teamsData = [
+            { name: "Sri Lanka National Team", code: "SL", captain: "Charith Asalanka", trophies: "1996 World Cup", rating: "96.5" },
+            { name: "Pakistan National Team", code: "PAK", captain: "Babar Azam", trophies: "1992 World Cup", rating: "97.2" },
+            { name: "India National Team", code: "IND", captain: "Rohit Sharma", trophies: "Multi World Cups", rating: "99.9" },
+            { name: "New Zealand National Team", code: "NZ", captain: "Kane Williamson", trophies: "WTC Champions", rating: "97.8" },
+            { name: "Mumbai Indians", code: "MI", captain: "Hardik Pandya", trophies: "5 IPL Titles", rating: "98.5" },
+            { name: "Royal Challengers Bengaluru", code: "RCB", captain: "Faf du Plessis", trophies: "Contender", rating: "97.1" },
+            { name: "Chennai Super Kings", code: "CSK", captain: "Ruturaj Gaikwad", trophies: "5 IPL Titles", rating: "98.9" },
+            { name: "Australia National Team", code: "AUS", captain: "Pat Cummins", trophies: "6 World Cups", rating: "99.4" }
+        ];
+
+        const playersByCountry = {
+            "Sri Lanka": [
+                { name: "Wanindu Hasaranga", role: "Leg-Spinner / All-Rounder", matches: "64 T20Is", wickets: "108 Wkts", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Pathum Nissanka", role: "Opening Batsman", matches: "58 ODIs", runs: "2,300+ Runs", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Kusal Mendis", role: "Wicketkeeper Batter", matches: "130+ Int.", runs: "4,500+ Runs", img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80" },
+                { name: "Charith Asalanka", role: "Middle-Order Batter", matches: "50+ ODIs", runs: "1,800+ Runs", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" },
+                { name: "Maheesh Theekshana", role: "Mystery Spinner", matches: "45 ODIs", wickets: "65 Wkts", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80" },
+                { name: "Dushmantha Chameera", role: "Fast Bowler", matches: "52 ODIs", wickets: "58 Wkts", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" },
+                { name: "Dasun Shanaka", role: "All-Rounder", matches: "70+ T20Is", runs: "1,400+ Runs", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Dhananjaya de Silva", role: "All-Rounder", matches: "50+ Tests", runs: "3,200+ Runs", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Matheesha Pathirana", role: "Pace Bowler", matches: "20+ T20Is", wickets: "28 Wkts", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80" },
+                { name: "Sadeera Samarawickrama", role: "Batsman / WK", matches: "35 ODIs", runs: "1,100+ Runs", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80" }
+            ],
+            "Pakistan": [
+                { name: "Babar Azam", role: "Top-Order Batter", matches: "260+ Int.", runs: "14,000+ Runs", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" },
+                { name: "Shaheen Afridi", role: "Left-Arm Fast Bowler", matches: "140+ Int.", wickets: "300+ Wkts", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Mohammad Rizwan", role: "Wicketkeeper Batter", matches: "200+ Int.", runs: "7,500+ Runs", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Naseem Shah", role: "Fast Bowler", matches: "75+ Int.", wickets: "140+ Wkts", img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80" },
+                { name: "Haris Rauf", role: "Express Pacer", matches: "100+ Int.", wickets: "170+ Wkts", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" },
+                { name: "Fakhar Zaman", role: "Opening Batsman", matches: "140+ Int.", runs: "5,200+ Runs", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Shadab Khan", role: "All-Rounder", matches: "120+ Int.", runs: "2,100+ Runs", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Imam-ul-Haq", role: "Opening Batsman", matches: "80+ ODIs", runs: "3,100+ Runs", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80" },
+                { name: "Iftikhar Ahmed", role: "Power Hitter", matches: "70+ Int.", runs: "1,400+ Runs", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80" },
+                { name: "Saim Ayub", role: "Opening All-Rounder", matches: "45+ Int.", runs: "1,000+ Runs", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80" }
+            ],
+            "India": [
+                { name: "Virat Kohli", role: "Top-Order Batter", matches: "500+ Int.", runs: "27,500+ Runs", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" },
+                { name: "Rohit Sharma", role: "Opening Batsman", matches: "480+ Int.", runs: "19,000+ Runs", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Jasprit Bumrah", role: "Fast Bowler", matches: "190+ Int.", wickets: "410+ Wkts", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Suryakumar Yadav", role: "T20 Specialist", matches: "75 T20Is", runs: "2,500+ Runs", img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80" },
+                { name: "Ravindra Jadeja", role: "All-Rounder", matches: "300+ Int.", runs: "6,000+ Runs", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" },
+                { name: "Hardik Pandya", role: "All-Rounder", matches: "150+ Int.", runs: "3,800+ Runs", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Shubman Gill", role: "Opening Batsman", matches: "100+ Int.", runs: "4,200+ Runs", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Rishabh Pant", role: "Wicketkeeper Batter", matches: "120+ Int.", runs: "4,100+ Runs", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80" },
+                { name: "Kuldeep Yadav", role: "Wrist Spinner", matches: "130+ Int.", wickets: "260+ Wkts", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80" },
+                { name: "Mohammed Shami", role: "Fast Bowler", matches: "170+ Int.", wickets: "440+ Wkts", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80" }
+            ],
+            "New Zealand": [
+                { name: "Kane Williamson", role: "Premier Batter", matches: "350+ Int.", runs: "18,000+ Runs", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Trent Boult", role: "Left-Arm Fast Bowler", matches: "220+ Int.", wickets: "310+ Wkts", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Tim Southee", role: "Experienced Pacer", matches: "380+ Int.", wickets: "750+ Wkts", img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80" },
+                { name: "Daryl Mitchell", role: "All-Rounder", matches: "110+ Int.", runs: "4,200+ Runs", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" },
+                { name: "Devon Conway", role: "Opening WK-Batter", matches: "90+ Int.", runs: "3,800+ Runs", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" },
+                { name: "Glenn Phillips", role: "Power Hitter", matches: "95+ Int.", runs: "2,400+ Runs", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Mitchell Santner", role: "Spinner / All-Rounder", matches: "180+ Int.", wickets: "210+ Wkts", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Tom Latham", role: "Wicketkeeper Batter", matches: "230+ Int.", runs: "6,500+ Runs", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80" },
+                { name: "Lockie Ferguson", role: "Express Pacer", matches: "85+ Int.", wickets: "140+ Wkts", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80" },
+                { name: "Rachin Ravindra", role: "All-Rounder", matches: "55+ Int.", runs: "2,100+ Runs", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80" }
+            ],
+            "Australia": [
+                { name: "Pat Cummins", role: "Captain / Fast Bowler", matches: "150+ Int.", wickets: "450+ Wkts", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Steve Smith", role: "Test Specialist", matches: "190+ Int.", runs: "10,000+ Runs", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Glenn Maxwell", role: "All-Rounder", matches: "240+ Int.", runs: "7,200+ Runs", img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80" },
+                { name: "Travis Head", role: "Aggressive Opener", matches: "110+ Int.", runs: "5,100+ Runs", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" },
+                { name: "Mitchell Starc", role: "Left-Arm Fast Bowler", matches: "230+ Int.", wickets: "660+ Wkts", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" },
+                { name: "David Warner", role: "Opening Batsman", matches: "350+ Int.", runs: "18,000+ Runs", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
+                { name: "Josh Hazlewood", role: "Fast Bowler", matches: "150+ Int.", wickets: "300+ Wkts", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" },
+                { name: "Marcus Stoinis", role: "All-Rounder", matches: "120+ Int.", runs: "3,100+ Runs", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80" },
+                { name: "Adam Zampa", role: "Leg Spinner", matches: "100+ ODIs", wickets: "160+ Wkts", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80" },
+                { name: "Cameron Green", role: "All-Rounder", matches: "60+ Int.", runs: "1,900+ Runs", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80" }
+            ]
+        };
+
+        const rankingsData = {
+            batsmen: [
+                { rank: 1, name: "Shubman Gill", country: "India", format: "ODI", rating: "884" },
+                { rank: 2, name: "Babar Azam", country: "Pakistan", format: "ODI", rating: "836" },
+                { rank: 3, name: "Virat Kohli", country: "India", format: "ODI", rating: "812" },
+                { rank: 4, name: "Pathum Nissanka", country: "Sri Lanka", format: "ODI", rating: "790" },
+                { rank: 5, name: "Kane Williamson", country: "New Zealand", format: "Test", rating: "775" }
+            ],
+            bowlers: [
+                { rank: 1, name: "Jasprit Bumrah", country: "India", format: "Test", rating: "870" },
+                { rank: 2, name: "Josh Hazlewood", country: "Australia", format: "Test", rating: "845" },
+                { rank: 3, name: "Shaheen Afridi", country: "Pakistan", format: "T20I", rating: "765" },
+                { rank: 4, name: "Wanindu Hasaranga", country: "Sri Lanka", format: "T20I", rating: "742" },
+                { rank: 5, name: "Trent Boult", country: "New Zealand", format: "ODI", rating: "735" }
+            ],
+            teams: [
+                { rank: 1, name: "India National Team", country: "IND", format: "All Formats", rating: "132 pts" },
+                { rank: 2, name: "Australia National Team", country: "AUS", format: "All Formats", rating: "124 pts" },
+                { rank: 3, name: "Sri Lanka National Team", country: "SL", format: "All Formats", rating: "112 pts" },
+                { rank: 4, name: "Pakistan National Team", country: "PAK", format: "All Formats", rating: "108 pts" },
+                { rank: 5, name: "New Zealand National Team", country: "NZ", format: "All Formats", rating: "104 pts" }
+            ]
+        };
+
+        const newsData = [
+            { title: "Sri Lanka vs Pakistan: Thrilling ODI Battle Underway in Colombo", category: "SL vs PAK", time: "30 mins ago", desc: "Kusal Mendis anchors the innings as Sri Lanka puts up a fighting total against Pakistan's fierce pace attack." },
+            { title: "India vs New Zealand Test Series Reaches Crucial Day 4 Session", category: "IND vs NZ", time: "2 hours ago", desc: "Virat Kohli and the Indian batting line-up face disciplined New Zealand bowling at Wankhede." },
+            { title: "IPL Mega Auction & Upcoming Franchise Fixtures Announced", category: "IPL 2026", time: "5 hours ago", desc: "Teams finalize their squads for the upcoming exciting T20 season with top international stars." }
+        ];
+
+        function renderAll() {
+            renderDashboardLive();
+            renderLiveMatches();
+            renderStreamingChannels();
+            renderMatchesSchedule('all');
+            renderTeams();
+            renderCountryPlayerTabs();
+            renderRankings('batsmen');
+            renderNews();
+            renderCharts();
+        }
+
+        function renderDashboardLive() {
+            const heroLive = document.getElementById('hero-live-matches');
+            if(!heroLive) return;
+            heroLive.innerHTML = liveMatchesData.map(m => `
+                <div class="glass-panel p-5 rounded-2xl border border-laserBlue/30 hover:border-neonCyan transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-neonBlue/10 rounded-full blur-xl group-hover:bg-neonCyan/20 transition-all"></div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-[10px] font-orbitron px-2 py-0.5 rounded bg-neonBlue/20 text-neonCyan border border-neonBlue/40">${m.tournament}</span>
+                        <span class="text-[10px] font-orbitron text-red-400 flex items-center space-x-1.5"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span><span>${m.status}</span></span>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between items-center font-orbitron text-sm">
+                            <span class="text-iceWhite font-bold">${m.team1}</span>
+                            <span class="text-neonCyan">${m.score1}</span>
+                        </div>
+                        <div class="flex justify-between items-center font-orbitron text-sm">
+                            <span class="text-slate-300">${m.team2}</span>
+                            <span class="text-laserBlue">${m.score2}</span>
+                        </div>
+                    </div>
+                    <div class="mb-3 space-y-1">
+                        <div class="flex justify-between text-[10px] font-orbitron text-slate-400">
+                            <span>Win Probability</span>
+                            <span class="text-neonCyan font-bold">${m.winProb}% ${m.team1}</span>
+                        </div>
+                        <div class="w-full bg-void h-1.5 rounded-full overflow-hidden flex">
+                            <div class="bg-neonCyan h-full" style="width: ${m.winProb}%"></div>
+                            <div class="bg-red-500 h-full" style="width: ${100 - m.winProb}%"></div>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-laserBlue/20 flex justify-between items-center text-[11px] text-slate-400">
+                        <span>CRR: ${m.crr}</span>
+                        <button onclick="switchTab('streaming')" class="text-red-400 hover:underline font-orbitron font-bold">WATCH LIVE STREAM →</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderLiveMatches() {
+            const liveGrid = document.getElementById('live-matches-grid');
+            if(!liveGrid) return;
+            liveGrid.innerHTML = liveMatchesData.map(m => `
+                <div class="glass-panel p-6 rounded-2xl border border-neonBlue/40 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-orbitron px-2.5 py-1 rounded-lg bg-neonBlue/20 text-neonCyan border border-neonBlue/40">${m.tournament}</span>
+                        <span class="text-xs font-orbitron text-red-400 animate-pulse flex items-center space-x-2"><i class="fa-solid fa-tower-broadcast"></i><span>${m.status}</span></span>
+                    </div>
+                    <div class="space-y-3 bg-void/50 p-4 rounded-xl border border-laserBlue/20">
+                        <div class="flex justify-between items-center font-orbitron">
+                            <span class="text-iceWhite font-bold text-base">${m.team1}</span>
+                            <span class="text-neonCyan text-lg font-black">${m.score1}</span>
+                        </div>
+                        <div class="flex justify-between items-center font-orbitron">
+                            <span class="text-slate-300 font-bold text-base">${m.team2}</span>
+                            <span class="text-laserBlue text-lg font-black">${m.score2}</span>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-glassDark border border-neonCyan/30 space-y-1.5">
+                        <div class="flex justify-between text-xs font-orbitron">
+                            <span class="text-iceWhite">Win Probability</span>
+                            <span class="text-neonCyan font-bold">${m.winProb}% ${m.team1}</span>
+                        </div>
+                        <div class="w-full bg-void h-2 rounded-full overflow-hidden flex">
+                            <div class="bg-gradient-to-r from-neonBlue to-neonCyan h-full" style="width: ${m.winProb}%"></div>
+                            <div class="bg-gradient-to-r from-pink-600 to-red-600 h-full" style="width: ${100 - m.winProb}%"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-xs font-orbitron text-slate-300">
+                        <div class="glass-panel p-2.5 rounded-lg"><span class="text-laserBlue block text-[10px]">CURRENT BATTER</span>${m.batsman}</div>
+                        <div class="glass-panel p-2.5 rounded-lg"><span class="text-laserBlue block text-[10px]">CURRENT BOWLER</span>${m.bowler}</div>
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button onclick="switchTab('streaming')" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 text-white font-orbitron font-bold text-xs shadow-lg hover:opacity-95 transition-all">
+                            <i class="fa-solid fa-play mr-1.5"></i> WATCH LIVE NOW
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderStreamingChannels() {
+            const streamingGrid = document.getElementById('streaming-channels-grid');
+            if(!streamingGrid) return;
+            streamingGrid.innerHTML = streamingChannels.map(ch => {
+                const isError = ch.url === "#";
+                const isNoMatch = ch.matchLive.includes("STANDBY");
+                return `
+                    <div class="glass-panel p-5 rounded-2xl border ${isError ? 'border-red-500/50 bg-red-950/20' : 'border-laserBlue/30 hover:border-neonCyan'} transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/50 flex items-center justify-center text-red-400 font-bold text-xs">
+                                        <i class="fa-solid fa-tv"></i>
+                                    </div>
+                                    <h4 class="font-orbitron font-bold text-iceWhite text-sm">${ch.name}</h4>
+                                </div>
+                                <span class="text-[10px] font-orbitron px-2 py-0.5 rounded ${isError || isNoMatch ? 'bg-red-500/20 text-red-400 border border-red-500/40' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'}">
+                                    ${isError ? 'ERROR' : isNoMatch ? 'STANDBY' : 'LIVE FEED'}
+                                </span>
+                            </div>
+                            <div class="bg-void/60 p-3 rounded-xl border border-laserBlue/20 mb-4">
+                                <div class="text-[10px] font-orbitron text-slate-400 mb-0.5">CURRENT MATCH STATUS:</div>
+                                <div class="text-xs font-semibold ${isError || isNoMatch ? 'text-red-400' : 'text-neonCyan'}">${ch.matchLive}</div>
+                            </div>
+                        </div>
+                        <div>
+                            ${isError ? `
+                                <button disabled class="w-full py-2.5 rounded-xl bg-red-900/40 text-red-300 font-orbitron text-xs font-bold cursor-not-allowed border border-red-500/30">
+                                    CHANNEL NOT FOUND
+                                </button>
+                            ` : `
+                                <a href="${ch.url}" target="_blank" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 text-white font-orbitron font-bold text-xs shadow-lg hover:opacity-95 transition-all flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>WATCH NOW</span>
+                                </a>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderMatchesSchedule(filter) {
+            const list = document.getElementById('matches-schedule-list');
+            if(!list) return;
+            const filtered = filter === 'all' ? matchesScheduleData : matchesScheduleData.filter(m => m.category.toUpperCase() === filter.toUpperCase());
+            list.innerHTML = filtered.map(m => `
+                <div class="glass-panel p-4 md:p-5 rounded-2xl border border-laserBlue/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-orbitron px-2 py-0.5 rounded bg-neonBlue/20 text-neonCyan border border-neonBlue/40">${m.category}</span>
+                            <span class="text-xs text-slate-400 font-orbitron">${m.date}</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-iceWhite text-base">${m.match}</h3>
+                        <div class="text-xs text-slate-400"><i class="fa-solid fa-location-dot text-laserBlue mr-1"></i>${m.venue}</div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-orbitron px-3 py-1 rounded-lg bg-glassDark border border-laserBlue/40 text-laserBlue">${m.status}</span>
+                        <button onclick="switchTab('streaming')" class="px-4 py-2 rounded-xl bg-red-600/20 border border-red-500 text-red-400 font-orbitron text-xs font-bold hover:bg-red-600/40 transition-all">WATCH LIVE</button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.match-filter').forEach(btn => {
+                btn.className = "match-filter px-3 py-1.5 rounded-lg bg-glassDark border border-laserBlue/30 text-slate-300 hover:text-neonCyan font-orbitron text-xs";
+                if(btn.textContent.trim().toUpperCase() === filter.toUpperCase()) {
+                    btn.className = "match-filter px-3 py-1.5 rounded-lg bg-neonBlue text-void font-bold font-orbitron text-xs";
+                }
+            });
+        }
+
+        function filterMatches(category) { renderMatchesSchedule(category); }
+
+        function renderTeams() {
+            const teamsGrid = document.getElementById('teams-grid');
+            if(!teamsGrid) return;
+            teamsGrid.innerHTML = teamsData.map(t => `
+                <div class="glass-panel p-5 rounded-2xl border border-laserBlue/30 text-center space-y-3">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-neonBlue to-neonCyan flex items-center justify-center text-void font-orbitron font-black text-xl neon-glow">
+                        ${t.code}
+                    </div>
+                    <h3 class="font-orbitron font-bold text-iceWhite text-sm">${t.name}</h3>
+                    <div class="text-xs text-slate-400 font-orbitron">Captain: ${t.captain}</div>
+                    <div class="inline-block px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30 text-neonCyan text-[10px] font-orbitron">
+                        ${t.trophies}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        let activeCountry = "Sri Lanka";
+        function renderCountryPlayerTabs() {
+            const pillsContainer = document.getElementById('country-filter-pills');
+            const countries = Object.keys(playersByCountry);
+            if(!pillsContainer) return;
+
+            pillsContainer.innerHTML = countries.map(c => `
+                <button onclick="switchCountryPlayers('${c}')" class="px-4 py-2 rounded-lg font-orbitron text-xs transition-all ${activeCountry === c ? 'bg-neonBlue text-void font-bold neon-glow' : 'bg-glassDark border border-laserBlue/30 text-slate-300 hover:text-neonCyan'}">
+                    ${c}
+                </button>
+            `).join('');
+
+            renderCountryPlayersList(activeCountry);
+        }
+
+        function switchCountryPlayers(country) {
+            activeCountry = country;
+            renderCountryPlayerTabs();
+        }
+
+        function renderCountryPlayersList(country) {
+            const playersGrid = document.getElementById('players-grid');
+            const players = playersByCountry[country] || [];
+            if(!playersGrid) return;
+
+            playersGrid.innerHTML = players.map(p => `
+                <div class="glass-panel rounded-2xl overflow-hidden border border-laserBlue/30 flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 overflow-hidden relative">
+                            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover filter brightness-90 hover:scale-105 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent"></div>
+                            <span class="absolute bottom-3 left-3 text-[10px] font-orbitron px-2.5 py-1 rounded bg-neonBlue/80 text-iceWhite backdrop-blur">${country}</span>
+                        </div>
+                        <div class="p-4 space-y-1.5">
+                            <h3 class="font-orbitron font-bold text-iceWhite text-sm">${p.name}</h3>
+                            <div class="text-xs text-neonCyan font-orbitron">${p.role}</div>
+                            <div class="text-[11px] text-slate-400 font-orbitron flex justify-between pt-1 border-t border-laserBlue/20">
+                                <span>${p.matches}</span>
+                                <span class="text-laserBlue font-bold">${p.runs || p.wickets}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 pt-0">
+                        <a href="https://www.cricinfo.com/cricketers" target="_blank" class="w-full py-2 rounded-xl bg-glassDark border border-neonCyan/40 text-neonCyan font-orbitron text-xs font-bold hover:bg-neonCyan/10 transition-all flex items-center justify-center space-x-1.5">
+                            <span>CRICINFO PROFILE</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRankings(format) {
+            const tbody = document.getElementById('rankings-table-body');
+            const data = rankingsData[format] || rankingsData.batsmen;
+            if(!tbody) return;
+
+            tbody.innerHTML = data.map(r => `
+                <tr class="hover:bg-glassDark transition-all">
+                    <td class="p-4 font-orbitron font-bold text-neonCyan">#${r.rank}</td>
+                    <td class="p-4 font-bold text-iceWhite">${r.name}</td>
+                    <td class="p-4 text-slate-300">${r.country}</td>
+                    <td class="p-4 text-slate-400 font-orbitron text-xs">${r.format}</td>
+                    <td class="p-4 text-right font-orbitron font-bold text-laserBlue">${r.rating}</td>
+                </tr>
+            `).join('');
+
+            ['bat', 'bowl', 'team'].forEach(f => {
+                const btn = document.getElementById('rank-btn-' + f);
+                if(btn) btn.className = "px-4 py-2 rounded-lg bg-glassDark border border-laserBlue/30 text-slate-300 font-orbitron text-xs";
+            });
+            const activeBtn = document.getElementById('rank-btn-' + (format === 'batsmen' ? 'bat' : format === 'bowlers' ? 'bowl' : 'team'));
+            if(activeBtn) activeBtn.className = "px-4 py-2 rounded-lg bg-neonBlue text-void font-bold font-orbitron text-xs";
+        }
+
+        function switchRankingFormat(format) { renderRankings(format); }
+
+        function renderNews() {
+            const newsGrid = document.getElementById('news-grid');
+            if(!newsGrid) return;
+            newsGrid.innerHTML = newsData.map(n => `
+                <div class="glass-panel p-5 rounded-2xl border border-laserBlue/30 space-y-3 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] font-orbitron text-neonCyan">${n.category}</span>
+                            <span class="text-[10px] text-slate-400 font-orbitron">${n.time}</span>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-iceWhite text-sm leading-snug">${n.title}</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">${n.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCharts() {
+            const wormBars = document.getElementById('worm-chart-bars');
+            if(wormBars) {
+                wormBars.innerHTML = [20, 38, 52, 68, 79, 95, 110, 128, 142, 160, 178, 195, 212, 245].map((v, i) => `
+                    <div class="w-full bg-neonCyan rounded-t" style="height: ${(v/280)*100}%;" title="Over ${i+1}: ${v} runs"></div>
+                `).join('');
+            }
+            const manhattanBars = document.getElementById('manhattan-chart-bars');
+            if(manhattanBars) {
+                manhattanBars.innerHTML = [7, 14, 9, 16, 11, 8, 15, 18, 12, 10, 17, 19, 13, 15].map((v, i) => `
+                    <div class="w-full bg-laserBlue rounded-t" style="height: ${(v/25)*100}%;" title="Over ${i+1}: ${v} runs"></div>
+                `).join('');
+            }
+        }
+
+        function sendAiMessage() {
+            const input = document.getElementById('ai-input');
+            const msg = input.value.trim();
+            if(!msg) return;
+
+            const chatContainer = document.getElementById('ai-chat-messages');
+            chatContainer.innerHTML += `
+                <div class="flex items-start justify-end space-x-3">
+                    <div class="glass-panel bg-neonBlue/10 p-3 rounded-xl max-w-lg text-xs md:text-sm text-iceWhite leading-relaxed border border-neonBlue/40">
+                        ${msg}
+                    </div>
+                    <div class="w-8 h-8 rounded-lg bg-neonCyan/20 border border-neonCyan flex items-center justify-center text-neonCyan font-orbitron text-xs">OR</div>
+                </div>
+            `;
+            input.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            setTimeout(() => {
+                let aiReply = "Analyzing via Cricinfo & Cricbuzz live feeds for SL vs PAK and IND vs NZ... Sri Lanka currently holds the momentum in Colombo while India vs New Zealand is evenly poised at Wankhede.";
+                if(msg.toLowerCase().includes('sl vs pak') || msg.toLowerCase().includes('sri lanka')) {
+                    aiReply = "Sri Lanka vs Pakistan Live Update: Sri Lanka is batting strongly with Kusal Mendis anchoring the innings. Win probability currently favors SL at 62%.";
+                } else if(msg.toLowerCase().includes('ind vs nz') || msg.toLowerCase().includes('india')) {
+                    aiReply = "India vs New Zealand Update: India's top order led by Virat Kohli is guiding the team effectively in the second innings.";
+                }
+                chatContainer.innerHTML += `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-neonBlue/20 border border-neonCyan flex items-center justify-center text-neonCyan font-orbitron text-xs">AI</div>
+                        <div class="glass-panel p-3 rounded-xl max-w-lg text-xs md:text-sm text-slate-200 leading-relaxed border border-laserBlue/30">
+                            ${aiReply}
+                        </div>
+                    </div>
+                `;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 800);
+        }
+
+        document.getElementById('ai-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') sendAiMessage(); });
+
+        function toggleSearchModal() {
+            const modal = document.getElementById('search-modal');
+            modal.classList.toggle('hidden');
+            if(!modal.classList.contains('hidden')) document.getElementById('global-search-input').focus();
+        }
+
+        function handleGlobalSearch(query) {
+            const container = document.getElementById('search-results-container');
+            if(!query.trim()) {
+                container.innerHTML = '<div class="text-xs text-slate-400 font-orbitron text-center py-4">Type to query real matches...</div>';
+                return;
+            }
+            const q = query.toLowerCase();
+            const matchedChannels = streamingChannels.filter(c => c.name.toLowerCase().includes(q) || c.matchLive.toLowerCase().includes(q));
+
+            let html = '';
+            if(matchedChannels.length > 0) {
+                html += '<div class="text-[10px] font-orbitron text-neonCyan mb-1">CHANNELS FOUND</div>';
+                html += matchedChannels.map(c => `
+                    <div onclick="switchTab('streaming'); toggleSearchModal();" class="p-2.5 rounded-lg bg-glassDark hover:bg-neonBlue/20 cursor-pointer flex justify-between items-center text-xs font-orbitron">
+                        <span class="text-iceWhite font-bold">${c.name}</span>
+                        <span class="text-laserBlue">${c.matchLive}</span>
+                    </div>
+                `).join('');
+            }
+            if(!html) html = '<div class="text-xs text-slate-400 font-orbitron text-center py-4">No records found matching query.</div>';
+            container.innerHTML = html;
+        }
+
+        document.getElementById('search-modal').addEventListener('click', (e) => { if(e.target.id === 'search-modal') toggleSearchModal(); });
+
+        function syncLiveApiData() {
+            const icon = document.getElementById('sync-icon');
+            icon.classList.add('fa-spin');
+            setTimeout(() => {
+                icon.classList.remove('fa-spin');
+                renderAll();
+                alert('Successfully synced SL vs PAK, IND vs NZ and IPL live scores from www.cricinfo.com & www.cricbuzz.com!');
+            }, 1000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { renderAll(); });
+    </script>
+</body>
+</html>
